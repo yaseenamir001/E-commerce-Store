@@ -1,8 +1,8 @@
 import React from "react";
-import playStationImg from "../../assets/playStation.png";
-import macBookImg from "../../assets/1000053139-removebg-preview.png";
-import headPhoneImg from "../../assets/headPhones.png";
-import proVisionImg from "../../assets/proVision.png";
+import playStationImg from "@/assets/playStation.png";
+import macBookImg from "@/assets/1000053139-removebg-preview.png";
+import headPhoneImg from "@/assets/headPhones.png";
+import proVisionImg from "@/assets/proVision.png";
 import { Button } from "@/components/ui/button";
 
 const FeaturedProducts = () => {

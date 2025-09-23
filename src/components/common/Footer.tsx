@@ -2,8 +2,8 @@ import { Facebook, Twitter, Instagram, Music2 } from "lucide-react";
 
 const Footer = () => {
   return (
-    <footer className="w-full bg-black text-white px-40 py-28 md:px-16 lg:px-24">
-      <div className="grid grid-cols-1 md:grid-cols-3 ml-10 gap-18">
+    <footer className="w-full bg-black text-white px-40 py-28 sm:px-2 md:px-16 lg:px-30">
+      <div className="grid grid-cols-1 md:grid-cols-3 justify-items-center gap-8 mx-16">
         <div>
           <h2 className="text-3xl font-bold mb-6">cyber</h2>
           <p className="text-sm text-gray-400 mb-6">
@@ -38,7 +38,7 @@ const Footer = () => {
           </ul>
         </div>
       </div>
-      <div className="flex gap-8 ml-10 mt-12">
+      <div className="flex gap-8 mx-16 mt-12">
         <a href="#">
           <Twitter className="h-5 w-5 text-gray-400 hover:text-white" />
         </a>
