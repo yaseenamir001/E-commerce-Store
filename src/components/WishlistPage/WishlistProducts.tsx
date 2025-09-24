@@ -1,16 +1,28 @@
-import ProductCard from "@/components/LandingPage/ProductCard";
-import type { Product } from "@/api/productApi";
+import { useWishlistStore } from "@/store/wishlistStore";
+import EmptyState from "./EmptyState";
+import WishlistCard from "./WishlistCard";
 
-interface Props {
-  products: Product[];
-}
+const WishlistProducts = () => {
+  const { wishlist } = useWishlistStore();
 
-const WishlistProducts = ({ products }: Props) => {
+  if (wishlist.length === 0) {
+    return <EmptyState />;
+  }
+
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
-      {products.map((product) => (
-        <ProductCard key={product.id} product={product} />
-      ))}
+    <div className="max-w-6xl mx-auto px-6 py-16 space-y-6">
+      <div className="flex items-center justify-between border-b pb-4">
+        <h2 className="text-2xl font-bold">My Wishlist</h2>
+        <span className="text-sm text-gray-500">
+          {wishlist.length} {wishlist.length === 1 ? "item" : "items"}
+        </span>
+      </div>
+
+      <div className="space-y-4">
+        {wishlist.map((product) => (
+          <WishlistCard key={product.id} product={product} />
+        ))}
+      </div>
     </div>
   );
 };

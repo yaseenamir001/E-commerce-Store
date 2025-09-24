@@ -8,6 +8,7 @@ import {
   ChevronLeft,
   ChevronRight,
 } from "lucide-react";
+import { Link } from "react-router-dom";
 
 const categories = [
   { name: "Phones", icon: Smartphone },
@@ -32,13 +33,14 @@ const Categories = () => {
 
         <div className="grid grid-cols-2 md:grid-cols-6 gap-8">
           {categories.map((item, i) => (
-            <div
+            <Link
+              to={`/category/${item.name.toLowerCase().replace(" ", "-")}`}
               key={i}
               className="flex flex-col items-center justify-center cursor-pointer bg-gray-200 h-[160px] rounded-2xl gap-3 p-6 hover:shadow-md transition"
             >
               <item.icon className="w-9 h-9" />
               <p className="mt-2 text-md font-medium">{item.name}</p>
-            </div>
+            </Link>
           ))}
         </div>
       </div>
