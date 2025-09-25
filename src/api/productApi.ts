@@ -8,16 +8,20 @@ export interface Product {
   discount?: number;
 }
 
-const BASE_URL = "https://dummyjson.com/products";
+// TODO: put it in env
+const BASE_URL = "https://dummyjson.com";
 
 interface ProductResponse {
   products: Product[];
 }
 
 export const fetchProductsByCategory = async (
-  category: string
+  category: string,
+  limit?: number
 ): Promise<ProductResponse> => {
-  const res = await fetch(`${BASE_URL}/category/${category}`);
+  const res = await fetch(
+    `${BASE_URL}/products/category/${category}?limit=${limit}`
+  );
   if (!res.ok) throw new Error("Failed to fetch products");
   return res.json();
 };
