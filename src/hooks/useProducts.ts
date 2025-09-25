@@ -14,8 +14,9 @@ export const useProducts = (categories: string[], limit = 4) => {
 
         const existingIds = new Set<number>();
 
+        // TODO: use promise.all
         for (const cat of categories) {
-          const data = await fetchProductsByCategory(cat);
+          const data = await fetchProductsByCategory(cat, countPerCategory);
           if (!data?.products?.length) continue;
 
           for (let j = 0; j < countPerCategory; j++) {

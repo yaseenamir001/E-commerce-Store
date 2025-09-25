@@ -16,8 +16,8 @@ const LandingPage = () => {
       <FeaturedProducts />
       <Categories />
       <ProductsSection />
-      <ProductShowcase />
-      <DiscountSection />
+      {/* <ProductShowcase /> */}
+      {/* <DiscountSection /> */}
       <PromoBanner />
       <Footer />
     </>
