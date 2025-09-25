@@ -22,7 +22,7 @@ export default function ProductCard({ product }: Props) {
   };
 
   return (
-    <Card className="relative rounded-xl border">
+    <Card className="relative rounded-xl bg-gray-100 border">
       <button onClick={toggleWishlist} className="absolute top-3 right-3">
         <Heart
           className={`h-5 w-5 cursor-pointer ${

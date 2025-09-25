@@ -10,7 +10,7 @@ const WishlistProducts = () => {
   }
 
   return (
-    <div className="max-w-6xl mx-auto px-6 py-16 space-y-6">
+    <div className="max-w-6xl mx-auto px-6 py-30 space-y-6">
       <div className="flex items-center justify-between border-b pb-4">
         <h2 className="text-2xl font-bold">My Wishlist</h2>
         <span className="text-sm text-gray-500">
