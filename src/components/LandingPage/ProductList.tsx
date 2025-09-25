@@ -8,7 +8,6 @@ function ProductList({
   categories: string[];
   limit: number;
 }) {
-  console.log({ categories, limit });
   const { products: newArrival } = useProducts(categories, limit);
 
   return (
