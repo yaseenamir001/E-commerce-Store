@@ -38,7 +38,7 @@ export default function ProductCard({ product }: Props) {
           alt={product.title}
           className="h-40 object-contain mb-4"
         />
-        <h3 className="text-sm font-medium text-center mb-2 line-clamp-2">
+        <h3 className="text-sm font-medium text-center mb-2 line-clamp-1">
           {product.title}
         </h3>
         <p className="text-lg font-semibold mb-4">${product.price ?? 0}</p>

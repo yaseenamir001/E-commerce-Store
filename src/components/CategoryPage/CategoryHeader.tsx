@@ -6,13 +6,13 @@ import {
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb";
 
-interface Props {
+interface CategoryHeaderProps {
   categoryName?: string;
 }
 
-export default function CategoryHeader({ categoryName }: Props) {
+export default function CategoryHeader({ categoryName }: CategoryHeaderProps) {
   return (
-    <Breadcrumb className="mb-12">
+    <Breadcrumb className="mb-6">
       <BreadcrumbList>
         <BreadcrumbItem>
           <BreadcrumbLink href="/">Home</BreadcrumbLink>
@@ -23,7 +23,7 @@ export default function CategoryHeader({ categoryName }: Props) {
         </BreadcrumbItem>
         <BreadcrumbSeparator />
         <BreadcrumbItem>
-          <span className="capitalize text-black">{categoryName}</span>
+          <span className="capitalize text-gray-900">{categoryName}</span>
         </BreadcrumbItem>
       </BreadcrumbList>
     </Breadcrumb>
