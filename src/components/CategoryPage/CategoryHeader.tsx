@@ -12,7 +12,7 @@ interface CategoryHeaderProps {
 
 export default function CategoryHeader({ categoryName }: CategoryHeaderProps) {
   return (
-    <Breadcrumb className="mb-6">
+    <Breadcrumb className="mb-12">
       <BreadcrumbList>
         <BreadcrumbItem>
           <BreadcrumbLink href="/">Home</BreadcrumbLink>
@@ -23,7 +23,7 @@ export default function CategoryHeader({ categoryName }: CategoryHeaderProps) {
         </BreadcrumbItem>
         <BreadcrumbSeparator />
         <BreadcrumbItem>
-          <span className="capitalize text-gray-900">{categoryName}</span>
+          <span className="capitalize text-black">{categoryName}</span>
         </BreadcrumbItem>
       </BreadcrumbList>
     </Breadcrumb>

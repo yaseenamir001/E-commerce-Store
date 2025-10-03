@@ -1,5 +1,5 @@
 import { create } from "zustand";
-import { fetchProductsByCategory } from "@/api/productApi";
+import { fetchProductsByCategorySimple } from "@/api/productApi";
 import type { Product } from "@/api/productApi";
 
 interface ProductsStore {
@@ -25,21 +25,48 @@ export const useProductsStore = create<ProductsStore>((set, get) => ({
 
     try {
       const results: Product[] = [];
-      const countPerCategory = Math.ceil(limit / categories.length);
       const existingIds = new Set<number>();
+      const productsByCategory: Product[][] = [];
 
       for (const category of categories) {
-        const data = await fetchProductsByCategory(category, countPerCategory);
+        const data = await fetchProductsByCategorySimple(category, 2);
         if (!data?.products?.length) continue;
-
-        data.products.forEach((product) => {
-          if (results.length >= limit || existingIds.has(product.id)) return;
-          results.push({
+        productsByCategory.push(
+          data.products.map((product) => ({
             ...product,
-            discount: Math.floor(Math.random() * 50) + 1,
-          });
-          existingIds.add(product.id);
-        });
+            discountPercentage: Math.floor(Math.random() * 50) + 1,
+          }))
+        );
+      }
+
+      let remaining = limit;
+      let categoryIndex = 0;
+      let productIndex = 0;
+
+      for (let i = 0; i < productsByCategory.length && remaining > 0; i++) {
+        const categoryProducts = productsByCategory[i];
+        if (
+          categoryProducts.length > 0 &&
+          !existingIds.has(categoryProducts[0].id)
+        ) {
+          results.push(categoryProducts[0]);
+          existingIds.add(categoryProducts[0].id);
+          remaining--;
+        }
+      }
+
+      while (remaining > 0 && categoryIndex < productsByCategory.length) {
+        const categoryProducts = productsByCategory[categoryIndex];
+        if (
+          productIndex + 1 < categoryProducts.length &&
+          !existingIds.has(categoryProducts[productIndex + 1].id)
+        ) {
+          results.push(categoryProducts[productIndex + 1]);
+          existingIds.add(categoryProducts[productIndex + 1].id);
+          remaining--;
+        }
+        categoryIndex = (categoryIndex + 1) % productsByCategory.length;
+        if (categoryIndex === 0) productIndex++;
       }
 
       set((state) => ({
