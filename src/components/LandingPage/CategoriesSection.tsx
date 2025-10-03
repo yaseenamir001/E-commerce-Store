@@ -34,7 +34,7 @@ const Categories = () => {
         <div className="grid grid-cols-2 md:grid-cols-6 gap-8">
           {categories.map((item, i) => (
             <Link
-              to={`/category/${item.name.toLowerCase().replace(" ", "-")}`}
+              to={`/category/${encodeURIComponent(item.name)}`}
               key={i}
               className="flex flex-col items-center justify-center cursor-pointer bg-gray-200 h-[160px] rounded-2xl gap-3 p-6 hover:shadow-md transition"
             >
