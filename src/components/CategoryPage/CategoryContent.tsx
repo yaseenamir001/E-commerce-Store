@@ -1,11 +1,8 @@
-import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import CategoryHeader from "./CategoryHeader";
 import Filters from "./Filters";
 import ProductGrid from "./ProductGrid";
 import Pagination from "./Pagination";
-import { fetchProductsByCategory, type Product } from "@/api/productApi";
-
 import {
   Select,
   SelectContent,
@@ -13,52 +10,66 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import useCategoryProducts from "@/hooks/useCategoryProducts";
 
 export default function CategoryContent() {
-  const { categoryName } = useParams();
-  const [products, setProducts] = useState<Product[]>([]);
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    if (categoryName) {
-      setLoading(true);
-      fetchProductsByCategory(categoryName.toLowerCase())
-        .then((data) => setProducts(data.products))
-        .finally(() => setLoading(false));
-    }
-  }, [categoryName]);
+  const { categoryName } = useParams<{ categoryName?: string }>();
+  const {
+    products,
+    slicedProducts,
+    totalPages,
+    currentPage,
+    setCurrentPage,
+    loading,
+    filters,
+    handleFilterChange,
+    sortField,
+    sortOrder,
+    handleSortChange,
+    selectedProductsCount,
+    startItem,
+    endItem,
+  } = useCategoryProducts(categoryName);
 
   return (
-    <div className="container mx-auto px-8 py-12">
+    <div className="container mx-auto px-4 py-8">
       <CategoryHeader categoryName={categoryName} />
-
-      <div className="grid grid-cols-12 gap-14">
-        <aside className="col-span-3">
-          <Filters />
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
+        <aside className="lg:col-span-3">
+          <Filters
+            products={products}
+            filters={filters}
+            onFilterChange={handleFilterChange}
+            categoryName={categoryName}
+          />
         </aside>
-
-        <main className="col-span-9">
-          <div className="flex items-center justify-between pt-9 mb-6">
+        <main className="lg:col-span-9">
+          <div className="flex items-center justify-between mb-6">
             <p className="text-gray-600">
-              Selected Products:{" "}
-              <span className="font-semibold">{products.length}</span>
+              Showing {startItem} - {endItem} of{" "}
+              <span className="font-semibold">{selectedProductsCount}</span>{" "}
+              products
             </p>
-
-            <Select>
+            <Select
+              onValueChange={handleSortChange}
+              value={sortField && sortOrder ? `${sortField}-${sortOrder}` : ""}
+            >
               <SelectTrigger className="w-[250px]">
                 <SelectValue placeholder="Sort by" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="rating">By rating</SelectItem>
-                <SelectItem value="low-high">Price: Low to High</SelectItem>
-                <SelectItem value="high-low">Price: High to Low</SelectItem>
+                <SelectItem value="rating-desc">By Rating</SelectItem>
+                <SelectItem value="price-asc">Price: Low to High</SelectItem>
+                <SelectItem value="price-desc">Price: High to Low</SelectItem>
               </SelectContent>
             </Select>
           </div>
-
-          <ProductGrid products={products} loading={loading} />
-
-          <Pagination totalPages={12} currentPage={1} />
+          <ProductGrid products={slicedProducts} loading={loading} />
+          <Pagination
+            totalPages={totalPages}
+            currentPage={currentPage}
+            onPageChange={setCurrentPage}
+          />
         </main>
       </div>
     </div>
