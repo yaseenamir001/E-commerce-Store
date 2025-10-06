@@ -3,6 +3,7 @@ import LandingPage from "./views/LandingPage";
 import Wishlist from "./views/WishlistPage";
 import AuthPage from "./views/AuthPage";
 import CategoryPage from "./views/CategoryPage";
+// import ProductDetailPage from "./views/ProductDetailPage";
 
 const AppRoutes = () => {
   return (
@@ -11,6 +12,7 @@ const AppRoutes = () => {
       <Route path="/wishlist" element={<Wishlist />} />
       <Route path="/account" element={<AuthPage />} />
       <Route path="/category/:categoryName" element={<CategoryPage />} />
+      {/* <Route path="/product/:id" element={<ProductDetailPage />} /> */}
     </Routes>
   );
 };
