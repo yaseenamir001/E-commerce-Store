@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Heart } from "lucide-react";
 import type { Product as APIProduct } from "@/api/productApi";
 import { useWishlistStore } from "@/store/wishlistStore";
+import { Link } from "react-router-dom";
 
 interface Props {
   product: APIProduct;
@@ -14,11 +15,8 @@ export default function ProductCard({ product }: Props) {
   const liked = isInWishlist(product.id);
 
   const toggleWishlist = () => {
-    if (liked) {
-      removeFromWishlist(product.id);
-    } else {
-      addToWishlist(product);
-    }
+    if (liked) removeFromWishlist(product.id);
+    else addToWishlist(product);
   };
 
   return (
@@ -38,13 +36,15 @@ export default function ProductCard({ product }: Props) {
           alt={product.title}
           className="h-40 object-contain mb-4"
         />
-        <h3 className="text-sm font-medium text-center mb-2 line-clamp-2">
+        <h3 className="text-sm font-medium text-center mb-2 line-clamp-1">
           {product.title}
         </h3>
         <p className="text-lg font-semibold mb-4">${product.price ?? 0}</p>
-        <Button variant="secondary" className="w-60 p-3">
-          Buy Now
-        </Button>
+        <Link to={`/product/${product.id}`} className="w-full">
+          <Button variant="secondary" className="w-full p-3">
+            View Details
+          </Button>
+        </Link>
       </CardContent>
     </Card>
   );

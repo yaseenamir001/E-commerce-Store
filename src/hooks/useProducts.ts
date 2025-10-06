@@ -1,49 +1,44 @@
-import { useEffect, useState } from "react";
-import { fetchProductsByCategory } from "@/api/productApi";
+import { useEffect, useState, useRef } from "react";
+import { useProductsStore } from "@/store/productsStore";
 import type { Product } from "@/api/productApi";
 
 export const useProducts = (categories: string[], limit = 4) => {
-  const [products, setProducts] = useState<Product[]>([]);
-  const [loading, setLoading] = useState(true);
+  const key = JSON.stringify({ categories, limit });
+
+  const cachedProducts = useProductsStore((state) => state.getProducts(key));
+  const fetchProducts = useProductsStore((state) => state.fetchProducts);
+
+  const [products, setProducts] = useState<Product[]>(cachedProducts || []);
+  const [loading, setLoading] = useState<boolean>(!cachedProducts);
+  const hasFetched = useRef(false);
 
   useEffect(() => {
-    async function fetchData() {
-      try {
-        const results: Product[] = [];
-        const countPerCategory = Math.ceil(limit / categories.length);
-
-        const existingIds = new Set<number>();
-
-        // TODO: use promise.all
-        for (const cat of categories) {
-          const data = await fetchProductsByCategory(cat, countPerCategory);
-          if (!data?.products?.length) continue;
-
-          for (let j = 0; j < countPerCategory; j++) {
-            if (results.length >= limit) break;
-
-            const product: Product = {
-              ...data.products[j % data.products.length],
-              discount: Math.floor(Math.random() * 50) + 1,
-            };
-
-            if (existingIds.has(product.id)) continue;
-            existingIds.add(product.id);
-
-            results.push(product);
-          }
-        }
-
-        setProducts(results);
-      } catch (err) {
-        console.error(err);
-      } finally {
-        setLoading(false);
-      }
+    if (cachedProducts || hasFetched.current) {
+      setProducts(cachedProducts || []);
+      setLoading(false);
+      return;
     }
 
-    fetchData();
-  }, [categories, limit]);
+    let isMounted = true;
+    hasFetched.current = true;
+    setLoading(true);
+
+    fetchProducts(key, categories, limit)
+      .then(() => {
+        if (!isMounted) return;
+        const newProducts = useProductsStore.getState().getProducts(key);
+        if (newProducts) setProducts(newProducts);
+        setLoading(false);
+      })
+      .catch((err) => {
+        console.error("Fetch error:", err);
+        if (isMounted) setLoading(false);
+      });
+
+    return () => {
+      isMounted = false;
+    };
+  }, [key, cachedProducts, fetchProducts]);
 
   return { products, loading };
 };

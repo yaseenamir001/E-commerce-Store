@@ -6,11 +6,11 @@ import {
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb";
 
-interface Props {
+interface CategoryHeaderProps {
   categoryName?: string;
 }
 
-export default function CategoryHeader({ categoryName }: Props) {
+export default function CategoryHeader({ categoryName }: CategoryHeaderProps) {
   return (
     <Breadcrumb className="mb-12">
       <BreadcrumbList>
